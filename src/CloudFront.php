@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\wmcontroller_cloudfront;
+namespace Drupal\wmpage_cache_cloudfront;
 
-use Drupal\wmcontroller\Entity\Cache;
-use Drupal\wmcontroller\Service\Cache\Storage\StorageInterface;
+use Drupal\wmpage_cache\Cache;
+use Drupal\wmpage_cache\Storage\StorageInterface;
 
 class CloudFront implements StorageInterface
 {
@@ -11,7 +11,7 @@ class CloudFront implements StorageInterface
     protected $invalidator;
     /** @var StorageInterface */
     protected $storage;
-
+    /** @var int */
     protected $concurrent = 50;
 
     public function __construct(
@@ -22,19 +22,19 @@ class CloudFront implements StorageInterface
         $this->storage = $storage;
     }
 
-    public function remove(array $ids)
+    public function remove(array $ids): void
     {
         $this->invalidate($ids);
         $this->storage->remove($ids);
     }
 
-    public function flush()
+    public function flush(): void
     {
         $this->storage->flush();
         $this->invalidator->invalidate(['/*']);
     }
 
-    public function load($id, $includeBody = true)
+    public function load($id, $includeBody = true): Cache
     {
         return $this->storage->load($id, $includeBody);
     }
@@ -44,22 +44,22 @@ class CloudFront implements StorageInterface
         return $this->storage->loadMultiple($ids, $includeBody);
     }
 
-    public function set(Cache $item, array $tags)
+    public function set(Cache $item, array $tags): void
     {
-        return $this->storage->set($item, $tags);
+        $this->storage->set($item, $tags);
     }
 
-    public function getByTags(array $tags)
+    public function getByTags(array $tags): array
     {
         return $this->storage->getByTags($tags);
     }
 
-    public function getExpired($amount)
+    public function getExpired($amount): array
     {
         $this->storage->getExpired($amount);
     }
 
-    protected function invalidate(array $ids)
+    protected function invalidate(array $ids): void
     {
         // Invalidate in a foreach loop so we can leverage generators and
         // play nice with our memory when invalidating a whole bunch of items.

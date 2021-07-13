@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\wmcontroller_cloudfront;
+namespace Drupal\wmpage_cache_cloudfront;
 
 use Aws\Credentials\Credentials;
 use Aws\Sdk;
@@ -15,7 +15,7 @@ class CloudFrontInvalidator
         $this->config = $config;
     }
 
-    public function invalidate(array $paths)
+    public function invalidate(array $paths): void
     {
         if (!$paths) {
             return;
@@ -24,7 +24,7 @@ class CloudFrontInvalidator
         $this->purgeCDN($paths);
     }
 
-    protected function purgeCDN(array $paths)
+    protected function purgeCDN(array $paths): ?array
     {
         $distributionId = $this->config['distributionId'];
         $accessKey = $this->config['accessKey'];
@@ -45,17 +45,15 @@ class CloudFrontInvalidator
 
         // Todo: what if we are already invalidating >= 3000 paths and
         // cloudfront takes it no more.
-        $result = $client->createInvalidation([
+        return $client->createInvalidation([
             'DistributionId' => $distributionId,
             'InvalidationBatch' => [
-                'CallerReference' => sha1(uniqid('', true) . '-' . mt_rand(0, 10000000)),
+                'CallerReference' => sha1(uniqid('', true) . '-' . random_int(0, 10000000)),
                 'Paths' => [
                     'Items' => $paths,
                     'Quantity' => count($paths),
                 ],
             ],
         ])->toArray();
-
-        return $result;
     }
 }

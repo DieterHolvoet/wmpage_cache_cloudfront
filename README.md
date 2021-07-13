@@ -1,11 +1,11 @@
-wmcontroller_cloudfront
+wmpage_cache_cloudfront
 ======================
 
-[![Latest Stable Version](https://poser.pugx.org/wieni/wmcontroller_cloudfront/v/stable)](https://packagist.org/packages/wieni/wmcontroller_cloudfront)
-[![Total Downloads](https://poser.pugx.org/wieni/wmcontroller_cloudfront/downloads)](https://packagist.org/packages/wieni/wmcontroller_cloudfront)
-[![License](https://poser.pugx.org/wieni/wmcontroller_cloudfront/license)](https://packagist.org/packages/wieni/wmcontroller_cloudfront)
+[![Latest Stable Version](https://poser.pugx.org/wieni/wmpage_cache_cloudfront/v/stable)](https://packagist.org/packages/wieni/wmpage_cache_cloudfront)
+[![Total Downloads](https://poser.pugx.org/wieni/wmpage_cache_cloudfront/downloads)](https://packagist.org/packages/wieni/wmpage_cache_cloudfront)
+[![License](https://poser.pugx.org/wieni/wmpage_cache_cloudfront/license)](https://packagist.org/packages/wieni/wmpage_cache_cloudfront)
 
-> An [Amazon CloudFront](https://aws.amazon.com/cloudfront) cache invalidator for [wieni/wmcontroller](https://github.com/wieni/wmcontroller)
+> An [Amazon CloudFront](https://aws.amazon.com/cloudfront) cache invalidator for [wieni/wmpage_cache](https://github.com/wieni/wmpage_cache)
 
 ## Installation
 
@@ -13,22 +13,22 @@ This package requires PHP 7.1 and Drupal 8 or higher. It can be
 installed using Composer:
 
 ```bash
- composer require wieni/wmcontroller_cloudfront
+ composer require wieni/wmpage_cache_cloudfront
 ```
 
-To enable this cache invalidator, change the `wmcontroller.cache.purger` container parameter:
+To enable this cache invalidator, change the `wmpage_cache.purger` container parameter:
 ```yaml
 parameters:
-    wmcontroller.cache.cloudfront:
+    wmpage_cache.cloudfront:
         distributionId: ''
         accessKey: ''
         secret: ''
     
-    wmcontroller.cache.storage: wmcontroller.cache.storage.cloudfront
+    wmpage_cache.storage: wmpage_cache.storage.cloudfront
     
     # This storage only invalidates at CloudFront. It does not store anything
     # and requires another storage to function. By default it uses the database storage.
-    wmcontroller.cache.cloudfront.backend.storage: wmcontroller.cache.storage.mysql
+    wmpage_cache.cloudfront.backend.storage: wmpage_cache.storage.mysql
 ```
 
 ## Changelog

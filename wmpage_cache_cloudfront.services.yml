@@ -1,0 +1,26 @@
+parameters:
+    wmpage_cache.cloudfront:
+        distributionId: ''
+        accessKey: ''
+        secret: ''
+
+    # Backend storage responsible for keeping track of tags and cache entries
+    wmpage_cache.cloudfront.backend.storage: wmpage_cache.storage.mysql
+
+services:
+    wmpage_cache.invalidator.cloudfront:
+        class: Drupal\wmpage_cache_cloudfront\CloudFrontInvalidator
+        arguments: ['%wmpage_cache.cloudfront%']
+
+    wmpage_cache.cloudfront.backend.storage:
+        class: Drupal\wmpage_cache\Storage\StorageInterface
+        factory: Drupal\wmpage_cache\ServiceFactory::create
+        arguments:
+            - '@service_container'
+            - '%wmpage_cache.cloudfront.backend.storage%'
+
+    wmpage_cache.storage.cloudfront:
+        class: Drupal\wmpage_cache_cloudfront\CloudFront
+        arguments:
+            - '@wmpage_cache.invalidator.cloudfront'
+            - '@wmpage_cache.cloudfront.backend.storage'
