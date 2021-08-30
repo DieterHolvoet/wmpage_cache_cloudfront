@@ -56,7 +56,7 @@ class CloudFront implements StorageInterface
 
     public function getExpired($amount): array
     {
-        $this->storage->getExpired($amount);
+        return $this->storage->getExpired($amount);
     }
 
     protected function invalidate(array $ids): void
