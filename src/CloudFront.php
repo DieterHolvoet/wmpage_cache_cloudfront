@@ -34,12 +34,12 @@ class CloudFront implements StorageInterface
         $this->invalidator->invalidate(['/*']);
     }
 
-    public function load($id, $includeBody = true): Cache
+    public function load(string $id, bool $includeBody = true): Cache
     {
         return $this->storage->load($id, $includeBody);
     }
 
-    public function loadMultiple(array $ids, $includeBody = true): \Iterator
+    public function loadMultiple(array $ids, bool $includeBody = true): \Iterator
     {
         return $this->storage->loadMultiple($ids, $includeBody);
     }
@@ -54,7 +54,7 @@ class CloudFront implements StorageInterface
         return $this->storage->getByTags($tags);
     }
 
-    public function getExpired($amount): array
+    public function getExpired(int $amount): array
     {
         return $this->storage->getExpired($amount);
     }
